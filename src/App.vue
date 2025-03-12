@@ -27,11 +27,21 @@
           :key="index"
           class="border p-2 rounded flex justify-between items-center"
         >
-          {{ task }}
-          <!-- Botón eliminar (desactivado por ahora) -->
+          <!-- Texto de la tarea con toggle al hacer click -->
+          <span
+            @click="toggleTask(index)"
+            :class="{
+              'line-through text-gray-400': task.completed,
+              'cursor-pointer': true
+            }"
+          >
+            {{ task.text }}
+          </span>
+
+          <!-- Botón eliminar -->
           <button
-            class="text-red-500 hover:text-red-700"
-            disabled
+            class="text-red-500 hover:text-red-700 ml-4"
+            @click.stop="deleteTask(index)"
           >
             ✖️
           </button>
@@ -49,17 +59,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// Lista de tareas
-const tasks = ref<string[]>([])
+// Definimos las tareas con texto y estado completed
+interface Task {
+  text: string
+  completed: boolean
+}
 
-// Texto del input
+const tasks = ref<Task[]>([])
 const newTask = ref('')
 
 // Función para añadir tareas
 const addTask = () => {
   if (newTask.value.trim() !== '') {
-    tasks.value.push(newTask.value.trim()) // Agregar tarea a la lista
+    tasks.value.push({ text: newTask.value.trim(), completed: false })
     newTask.value = '' // Limpiar input
   }
+}
+
+// Función para marcar/desmarcar como completada
+const toggleTask = (index: number) => {
+  tasks.value[index].completed = !tasks.value[index].completed
+}
+
+// Función para eliminar tarea
+const deleteTask = (index: number) => {
+  tasks.value.splice(index, 1) // Elimina la tarea por índice
 }
 </script>
