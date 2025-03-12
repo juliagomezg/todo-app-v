@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// Definimos las tareas con texto y estado completed
+// Lista de tareas con texto y estado de completada
 interface Task {
   text: string
   completed: boolean
@@ -81,8 +81,8 @@ const toggleTask = (index: number) => {
   tasks.value[index].completed = !tasks.value[index].completed
 }
 
-// Función para eliminar tarea
+// Función para eliminar tareas
 const deleteTask = (index: number) => {
-  tasks.value.splice(index, 1) // Elimina la tarea por índice
+  tasks.value.splice(index, 1) // Elimina la tarea
 }
 </script>
