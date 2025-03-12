@@ -6,27 +6,60 @@
       <!-- Input + Botón -->
       <div class="flex gap-2 mb-4">
         <input
+          v-model="newTask"
+          @keyup.enter="addTask"
           type="text"
           placeholder="Escribe una nueva tarea"
           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          @click="addTask"
         >
           Agregar
         </button>
       </div>
 
-      <!-- Lista de tareas (vacía por ahora) -->
+      <!-- Lista de tareas -->
       <ul class="space-y-2">
-        <!-- Ejemplo de ítem (luego dinámico) -->
-        <!-- <li class="border p-2 rounded">Ejemplo de tarea</li> -->
-        <li class="text-gray-500 text-center">No hay tareas aún</li>
+        <li
+          v-for="(task, index) in tasks"
+          :key="index"
+          class="border p-2 rounded flex justify-between items-center"
+        >
+          {{ task }}
+          <!-- Botón eliminar (desactivado por ahora) -->
+          <button
+            class="text-red-500 hover:text-red-700"
+            disabled
+          >
+            ✖️
+          </button>
+        </li>
+
+        <!-- Mensaje si no hay tareas -->
+        <li v-if="tasks.length === 0" class="text-gray-500 text-center">
+          No hay tareas aún
+        </li>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// Aún sin lógica, solo UI
+import { ref } from 'vue'
+
+// Lista de tareas
+const tasks = ref<string[]>([])
+
+// Texto del input
+const newTask = ref('')
+
+// Función para añadir tareas
+const addTask = () => {
+  if (newTask.value.trim() !== '') {
+    tasks.value.push(newTask.value.trim()) // Agregar tarea a la lista
+    newTask.value = '' // Limpiar input
+  }
+}
 </script>
